@@ -4,7 +4,7 @@ import Tooltip from "./Tooltip";
 
 const Navbar = () => {
   return (
-    <div className="flex flex-row justify-between items-center p-3 px-8 bg-white shadow-md">
+    <div className="flex flex-row justify-between items-center p-3 px-8 bg-white shadow-md mb-8">
       <p className="text-lg font-bold text-[#159895]">GroceryStoreAdmin</p>
       <div>
         <Tooltip text='Hans Cristian'>
