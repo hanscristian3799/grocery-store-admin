@@ -1,7 +1,41 @@
 import { usdFormatter } from "@/helper/helper-functions";
+import { QUERY_KEY_PRODUCTS } from "@/pages/data-fetch/constant";
+import { deleteProduct } from "@/pages/data-fetch/controller";
 import React from "react";
+import { useMutation, useQueryClient } from "react-query";
+import Swal from "sweetalert2";
 
-const ProductsTable = ({data}) => {
+const ProductsTable = ({ data }) => {
+  const queryClient = useQueryClient();
+
+  const deleteProductMutation = useMutation({
+    mutationFn: (id) => deleteProduct(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY_PRODUCTS });
+    },
+  });
+
+  if (deleteProductMutation.isLoading) {
+    Swal.fire({
+      position: "top-end",
+      text: "Deleting Product...",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      width: 300,
+    });
+  }
+
+  if (deleteProductMutation.isSuccess) {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      text: "Delete Success",
+      showConfirmButton: false,
+      timer: 1000,
+      width: 300,
+    });
+  }
+
   return (
     <div className="mt-8 mb-4">
       <div className="flex flex-row justify-end">
@@ -33,7 +67,10 @@ const ProductsTable = ({data}) => {
                   <button className="bg-yellow-300 hover:bg-yellow-400 px-3 py-1 rounded font-normal">
                     View
                   </button>
-                  <button className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white font-normal">
+                  <button
+                    className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white font-normal"
+                    onClick={() => deleteProductMutation.mutate(product.id)}
+                  >
                     Delete
                   </button>
                 </td>
