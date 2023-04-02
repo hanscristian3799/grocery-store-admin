@@ -4,13 +4,20 @@ import Head from "next/head";
 import { useQuery, useQueryClient } from "react-query";
 import { QUERY_KEY_PRODUCTS } from "../helper/data-fetch/constant";
 import { getProducts } from "../helper/data-fetch/controller";
+import { useStore } from "../zustand/index";
 
 export default function Home() {
+  const setLastId = useStore((state) => state.setLastId);
+
   const { isLoading, isError, error, data } = useQuery(
     QUERY_KEY_PRODUCTS,
     getProducts,
     {
-      retry: false
+      retry: false,
+      onSuccess: (data) => {
+        const lastdata = data.at(-1);
+        setLastId(lastdata.id);
+      },
     }
   );
 
@@ -23,7 +30,9 @@ export default function Home() {
   }
 
   if (isError) {
-    return <div className="mt-4 font-bold text-red-500">Error: {error.message}</div>;
+    return (
+      <div className="mt-4 font-bold text-red-500">Error: {error.message}</div>
+    );
   }
 
   return (

@@ -4,6 +4,7 @@ import { deleteProduct } from "@/helper/data-fetch/controller";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 const ProductsTable = ({ data }) => {
   const queryClient = useQueryClient();
@@ -26,10 +27,14 @@ const ProductsTable = ({ data }) => {
   }
 
   if (deleteProductMutation.isSuccess) {
+    Swal.close();
+  }
+
+  if (deleteProductMutation.isError) {
     Swal.fire({
       position: "top-end",
-      icon: "success",
-      text: "Delete Success",
+      icon: "error",
+      text: deleteProductMutation.error,
       showConfirmButton: false,
       timer: 1000,
       width: 300,
@@ -37,11 +42,14 @@ const ProductsTable = ({ data }) => {
   }
 
   return (
-    <div className="mt-8 mb-4">
+    <div className="mb-4">
       <div className="flex flex-row justify-end">
-        <button className="bg-[#159895] px-3 py-2 rounded font-normal text-white mb-4 hover:bg-[#117A77]">
+        <Link
+          href="/product/add"
+          className="bg-[#159895] px-3 py-2 rounded font-normal text-white mb-4 hover:bg-[#117A77]"
+        >
           Add Product
-        </button>
+        </Link>
       </div>
       <table className="table-auto bg-red-50 w-full rounded-md shadow-gray-800 overflow-hidden">
         <thead className="bg-[#159895] rounded-t-md">
@@ -64,9 +72,12 @@ const ProductsTable = ({ data }) => {
                 <td className="p-4">{product.name}</td>
                 <td className="p-4">{usdFormatter.format(product.price)}</td>
                 <td className="p-4 flex flex-row items-center justify-end gap-2">
-                  <button className="bg-yellow-300 hover:bg-yellow-400 px-3 py-1 rounded font-normal">
+                  <Link
+                    href={`product/edit/${product.id}`}
+                    className="bg-yellow-300 hover:bg-yellow-400 px-3 py-1 rounded font-normal"
+                  >
                     View
-                  </button>
+                  </Link>
                   <button
                     className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white font-normal"
                     onClick={() => deleteProductMutation.mutate(product.id)}
