@@ -1,3 +1,4 @@
+import { usdFormatter } from "@/helper/helper-functions";
 import React from "react";
 
 const ProductsTable = ({data}) => {
@@ -27,7 +28,7 @@ const ProductsTable = ({data}) => {
               <tr key={product.id} className="bg-[#C7E5E6]">
                 <td className="p-4">{product.id}</td>
                 <td className="p-4">{product.name}</td>
-                <td className="p-4">{product.price}</td>
+                <td className="p-4">{usdFormatter.format(product.price)}</td>
                 <td className="p-4 flex flex-row items-center justify-end gap-2">
                   <button className="bg-yellow-300 hover:bg-yellow-400 px-3 py-1 rounded font-normal">
                     View
