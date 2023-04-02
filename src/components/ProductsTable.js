@@ -3,8 +3,8 @@ import { QUERY_KEY_PRODUCTS } from "@/helper/data-fetch/constant";
 import { deleteProduct } from "@/helper/data-fetch/controller";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
-import Swal from "sweetalert2";
 import Link from "next/link";
+import { closeSwal, fireSwal } from "@/helper/helper-functions/swal";
 
 const ProductsTable = ({ data }) => {
   const queryClient = useQueryClient();
@@ -17,27 +17,22 @@ const ProductsTable = ({ data }) => {
   });
 
   if (deleteProductMutation.isLoading) {
-    Swal.fire({
-      position: "top-end",
-      text: "Deleting Product...",
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      width: 300,
-    });
+    fireSwal(
+      { text: "Deleting Product...", showConfirmButton: false },
+      { allowOutsideClick: false }
+    );
   }
 
   if (deleteProductMutation.isSuccess) {
-    Swal.close();
+    closeSwal();
   }
 
   if (deleteProductMutation.isError) {
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
+    fireSwal({
       text: deleteProductMutation.error,
+      icon: "error",
       showConfirmButton: false,
       timer: 1000,
-      width: 300,
     });
   }
 

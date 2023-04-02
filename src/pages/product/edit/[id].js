@@ -2,13 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { editProduct, getProductsById } from "@/helper/data-fetch/controller";
-import Swal from "sweetalert2";
 import {
   QUERY_KEY_PRODUCT,
   QUERY_KEY_PRODUCTS,
 } from "@/helper/data-fetch/constant";
 import Router, { useRouter } from "next/router";
 import Loading from "@/components/Loading";
+import { fireSwal } from "@/helper/helper-functions/swal";
 
 const EditProduct = () => {
   const queryClient = useQueryClient();
@@ -65,34 +65,35 @@ const EditProduct = () => {
   }
 
   if (editProductMutation.isLoading) {
-    Swal.fire({
-      position: "top-end",
-      text: "Adding Product...",
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      width: 300,
-    });
+    fireSwal(
+      {
+        text: "Adding Product...",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1000,
+        willClose: () => {
+          Router.back();
+        },
+      },
+      { allowOutsideClick: false }
+    );
   }
 
   if (editProductMutation.isError) {
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
+    fireSwal({
       text: editProductMutation.error,
+      icon: "error",
       showConfirmButton: false,
       timer: 1000,
-      width: 300,
     });
   }
 
   if (editProductMutation.isSuccess) {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
+    fireSwal({
       text: "Success",
+      icon: "success",
       showConfirmButton: false,
       timer: 1000,
-      width: 300,
       willClose: () => {
         Router.back();
       },

@@ -6,6 +6,7 @@ import { addProduct } from "@/helper/data-fetch/controller";
 import Swal from "sweetalert2";
 import { QUERY_KEY_PRODUCTS } from "@/helper/data-fetch/constant";
 import Router from "next/router";
+import { fireSwal } from "@/helper/helper-functions/swal";
 
 const CreateProduct = () => {
   const queryClient = useQueryClient();
@@ -32,34 +33,30 @@ const CreateProduct = () => {
   const lastId = useStore((state) => state.lastId);
 
   if (addProductMutation.isLoading) {
-    Swal.fire({
-      position: "top-end",
-      text: "Adding Product...",
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      width: 300,
-    });
+    fireSwal(
+      {
+        text: "Adding Product...",
+        timer: 1000,
+      },
+      {
+        allowOutsideClick: false,
+      }
+    );
   }
 
   if (addProductMutation.isError) {
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
+    fireSwal({
       text: addProductMutation.error,
-      showConfirmButton: false,
+      icon: "error",
       timer: 1000,
-      width: 300,
     });
   }
 
   if (addProductMutation.isSuccess) {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
+    fireSwal({
       text: "Success",
-      showConfirmButton: false,
+      icon: "success",
       timer: 1000,
-      width: 300,
       willClose: () => {
         Router.back();
       },
