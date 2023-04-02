@@ -1,6 +1,6 @@
 import { usdFormatter } from "@/helper/helper-functions";
-import { QUERY_KEY_PRODUCTS } from "@/pages/data-fetch/constant";
-import { deleteProduct } from "@/pages/data-fetch/controller";
+import { QUERY_KEY_PRODUCTS } from "@/helper/data-fetch/constant";
+import { deleteProduct } from "@/helper/data-fetch/controller";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";

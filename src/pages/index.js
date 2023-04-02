@@ -2,8 +2,8 @@ import Loading from "@/components/Loading";
 import ProductsTable from "@/components/ProductsTable";
 import Head from "next/head";
 import { useQuery, useQueryClient } from "react-query";
-import { QUERY_KEY_PRODUCTS } from "./data-fetch/constant";
-import { getProducts } from "./data-fetch/controller";
+import { QUERY_KEY_PRODUCTS } from "../helper/data-fetch/constant";
+import { getProducts } from "../helper/data-fetch/controller";
 
 export default function Home() {
   const { isLoading, isError, error, data } = useQuery(
